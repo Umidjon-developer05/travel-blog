@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Search, Menu, X, Sun, Moon } from 'lucide-react'
+import { Search, Menu, X, Sun, Moon, Plane } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { LocaleSwitcher } from '@/components/locale-switcher'
@@ -30,16 +30,20 @@ export function Navigation() {
 		<motion.nav
 			initial={{ y: -100 }}
 			animate={{ y: 0 }}
-			className='sticky top-0    '
+			className='sticky top-0   z-30 '
 		>
 			<div className='container backdrop-blur dark:bg-slate-900/50 rounded-md light:border-2 mx-auto px-4'>
 				<div className='flex items-center justify-between h-16'>
 					{/* Logo */}
-					<Link href={`/${locale}`} className='flex items-center space-x-2'>
+					<Link
+						href={`/${locale}`}
+						className='flex items-center space-x-2 animate-fade-in-up'
+					>
 						<motion.div
 							whileHover={{ scale: 1.05 }}
-							className='text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent'
+							className='sm:text-2xl flex  item-center gap-2 font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent'
 						>
+							<Plane className='h-8 w-8 text-blue-400 animate-float' />
 							Uzbekistan Travel
 						</motion.div>
 					</Link>
@@ -50,7 +54,7 @@ export function Navigation() {
 							<Link
 								key={item.name}
 								href={item.href}
-								className=' hover:text-white transition-colors relative group'
+								className='  transition-colors relative group'
 							>
 								{item.name}
 								<span className='absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-400 transition-all group-hover:w-full'></span>
@@ -59,11 +63,12 @@ export function Navigation() {
 					</div>
 
 					{/* Right Side Actions */}
-					<div className='flex items-center space-x-4'>
+					<div className='flex items-center sm:space-x-4 '>
 						{/* Theme Toggle */}
 						<Button
 							variant='ghost'
 							size='sm'
+							className='sm:block hidden'
 							onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
 						>
 							{theme === 'dark' ? (

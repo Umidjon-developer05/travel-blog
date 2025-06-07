@@ -15,6 +15,7 @@ export interface BlogPost {
 	id: string
 	title: string
 	slug: string
+	keywords: { html: string; text: string }
 	excerpt?: { html: string } // Make excerpt optional
 	publishedAt: string
 	coverImage: { id: string; url: string }

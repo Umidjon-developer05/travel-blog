@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import { getBlogPostBySlug } from '@/lib/hygraph'
 import { formatDate } from '@/lib/utils'
 import { VideoPlayer } from '@/components/video-player'
@@ -40,6 +40,7 @@ export const generateMetadata = async ({
 			description: post.excerpt?.html || '',
 			images: [post.coverImage?.url || '/'],
 		},
+		keywords: [post.keywords?.text],
 	}
 }
 
@@ -50,7 +51,6 @@ export default async function BlogPost({
 }) {
 	const { locale, slug } = params
 	const post = await getBlogPostBySlug(locale, slug)
-
 	if (!post) {
 		notFound()
 	}
@@ -72,6 +72,14 @@ export default async function BlogPost({
 				)}
 
 				<h1 className='mb-4 text-4xl font-bold'>{post.title}</h1>
+				<div className='mb-8 text-sm'>
+					<div dangerouslySetInnerHTML={{ __html: post.excerpt?.html || '' }} />
+				</div>
+
+				<div
+					className='mb-8'
+					dangerouslySetInnerHTML={{ __html: post.keywords?.html || '' }}
+				/>
 
 				<div className='mb-8 text-sm text-muted-foreground'>
 					{formatDate(post.publishedAt, locale)}

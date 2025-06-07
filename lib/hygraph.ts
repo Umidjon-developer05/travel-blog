@@ -48,6 +48,7 @@ export async function getBlogPosts(locale: string): Promise<BlogPost[]> {
 					}
 				}
 				videoUrl
+				
 			}
 		}
 	`
@@ -74,6 +75,10 @@ export async function getBlogPostBySlug(
 				publishedAt
 				slug
 				title
+				keywords {
+					html
+					text
+				}
 				videoUrl
 				id
 				excerpt {
