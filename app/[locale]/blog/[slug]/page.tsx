@@ -3,20 +3,43 @@ import { notFound } from 'next/navigation'
 import { getBlogPostBySlug } from '@/lib/hygraph'
 import { formatDate } from '@/lib/utils'
 import { VideoPlayer } from '@/components/video-player'
-
+import type { Metadata } from 'next'
 export const generateMetadata = async ({
 	params,
 }: {
 	params: { locale: string; slug: string }
-}) => {
+}): Promise<Metadata> => {
 	const post = await getBlogPostBySlug(params.locale, params.slug)
+
+	if (!post) {
+		return {
+			title: 'Post not found',
+			description: 'The requested blog post could not be found.',
+		}
+	}
+
 	return {
-		title: post?.title,
-		description: post?.excerpt?.html,
-		ogImage: post?.coverImage?.url,
-		ogType: 'article',
-		twitterCard: 'summary_large_image',
-		twitterImage: post?.coverImage?.url,
+		title: post.title,
+		description: post.excerpt?.html || '',
+		openGraph: {
+			type: 'article',
+			title: post.title,
+			description: post.excerpt?.html || '',
+			images: [
+				{
+					url: post.coverImage?.url || '/',
+					width: 1200,
+					height: 630,
+					alt: post.title,
+				},
+			],
+		},
+		twitter: {
+			card: 'summary_large_image',
+			title: post.title,
+			description: post.excerpt?.html || '',
+			images: [post.coverImage?.url || '/'],
+		},
 	}
 }
 
@@ -38,7 +61,7 @@ export default async function BlogPost({
 				{post.coverImage && (
 					<div className='mb-8 overflow-hidden rounded-lg'>
 						<Image
-							src={post.coverImage.url || '/placeholder.svg'}
+							src={post.coverImage.url || '/'}
 							alt={post.title}
 							width={1200}
 							height={630}
