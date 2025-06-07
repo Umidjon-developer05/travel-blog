@@ -4,6 +4,22 @@ import { getBlogPostBySlug } from '@/lib/hygraph'
 import { formatDate } from '@/lib/utils'
 import { VideoPlayer } from '@/components/video-player'
 
+export const generateMetadata = async ({
+	params,
+}: {
+	params: { locale: string; slug: string }
+}) => {
+	const post = await getBlogPostBySlug(params.locale, params.slug)
+	return {
+		title: post?.title,
+		description: post?.excerpt?.html,
+		ogImage: post?.coverImage?.url,
+		ogType: 'article',
+		twitterCard: 'summary_large_image',
+		twitterImage: post?.coverImage?.url,
+	}
+}
+
 export default async function BlogPost({
 	params,
 }: {
