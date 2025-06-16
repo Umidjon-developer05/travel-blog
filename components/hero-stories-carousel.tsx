@@ -273,7 +273,7 @@ export function HeroStoriesCarousel({ stories }: HeroStoriesCarouselProps) {
 							</div>
 
 							{/* Story Content */}
-							<div className='aspect-[9/16] w-full bg-black rounded-lg overflow-hidden '>
+							<div className='h-[400px] w-full bg-black rounded-lg overflow-hidden '>
 								{selectedStory && (
 									<CustomVideoPlayer
 										url={selectedStory.videoUrl}

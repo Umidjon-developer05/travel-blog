@@ -1,14 +1,20 @@
 import Image from 'next/image'
-import { notFound, redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import { getBlogPostBySlug } from '@/lib/hygraph'
 import { formatDate } from '@/lib/utils'
 import { VideoPlayer } from '@/components/video-player'
 import type { Metadata } from 'next'
+import { authOptions } from '@/lib/auth/auth'
+import { getServerSession } from 'next-auth'
+import BlogCommentsWrapper from '@/components/blog-comments-wrapper'
+
+interface Props {
+	params: { locale: string; slug: string }
+}
+
 export const generateMetadata = async ({
 	params,
-}: {
-	params: { locale: string; slug: string }
-}): Promise<Metadata> => {
+}: Props): Promise<Metadata> => {
 	const post = await getBlogPostBySlug(params.locale, params.slug)
 
 	if (!post) {
@@ -44,13 +50,11 @@ export const generateMetadata = async ({
 	}
 }
 
-export default async function BlogPost({
-	params,
-}: {
-	params: { locale: string; slug: string }
-}) {
+export default async function BlogPost({ params }: Props) {
 	const { locale, slug } = params
 	const post = await getBlogPostBySlug(locale, slug)
+	const session = await getServerSession(authOptions)
+
 	if (!post) {
 		notFound()
 	}
@@ -90,6 +94,10 @@ export default async function BlogPost({
 						<VideoPlayer url={post.videoUrl} />
 					</div>
 				)}
+			</div>
+
+			<div className='container mx-auto max-w-[800px]'>
+				<BlogCommentsWrapper slug={slug} session={session} />
 			</div>
 		</article>
 	)

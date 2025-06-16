@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-	title: ' Uzbekistan Travel Blog - WanderWise ',
+	title: ' MaTa – Taste & Travel Blog',
 	description:
 		'Discover breathtaking destinations, travel tips, itineraries, and personal stories from around the globe. WanderWise is your ultimate travel companion.',
 	keywords: [
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 		'Samarkand travel guide',
 	],
 	openGraph: {
-		title: ' Uzbekistan Travel Blog - WanderWise ',
+		title: ' MaTa – Taste & Travel Blog ',
 		description:
 			'Discover breathtaking destinations, travel tips, itineraries, and personal stories from around the globe. WanderWise is your ultimate travel companion.',
 		url: 'https://wanderwise.vercel.app/',
