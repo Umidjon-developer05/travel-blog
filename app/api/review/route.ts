@@ -55,18 +55,11 @@ export async function GET(request: Request) {
 
 		const reviews = await review
 			.find({ blogSlug })
-			.populate('userId', 'name email image') // faqat kerakli fieldlar
+			.populate('userId', 'name email image')
 
 		// userId ni "user" qilib rename qilish
-		const formatted = reviews.map(r => ({
-			_id: r._id,
-			blogSlug: r.blogSlug,
-			rating: r.rating,
-			comment: r.comment,
-			user: r.userId,
-		}))
 
-		return NextResponse.json(formatted)
+		return NextResponse.json(reviews)
 	} catch (err) {
 		console.error('Review GET error:', err)
 		return NextResponse.json(

@@ -25,8 +25,8 @@ export default async function RootLayout({
 	if (!isValidLocale) notFound()
 
 	return (
-		<html lang={locale} suppressHydrationWarning>
-			<body className={inter.className} suppressHydrationWarning>
+		<html lang={locale} suppressHydrationWarning={true}>
+			<body className={inter.className} suppressHydrationWarning={true}>
 				<ThemeProvider attribute='class' defaultTheme='dark' enableSystem>
 					<Navigation session={session ?? { user: { id: '' } }} />
 					<main className='min-h-screen'>{children}</main>

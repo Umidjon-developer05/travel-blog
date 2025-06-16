@@ -147,6 +147,9 @@ export const authOptions: NextAuthOptions = {
 						providerAccountId: account?.providerAccountId,
 						createdAt: new Date(),
 					})
+					if (newUser && newUser._id) {
+						user.id = newUser._id.toString()
+					}
 					savedUser = await newUser.save()
 				} else {
 					await users.findOneAndUpdate(
@@ -162,9 +165,6 @@ export const authOptions: NextAuthOptions = {
 				}
 
 				// 👉 user.id ni MongoDB _id ga o‘zgartirish
-				if (savedUser && savedUser._id) {
-					user.id = savedUser._id.toString()
-				}
 
 				return true
 			} catch (error) {
