@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Card, CardContent } from '@/components/ui/card'
 import { Star } from 'lucide-react'
 
-interface UserID {
+interface User {
 	_id: string
 	name: string
 	email: string
@@ -16,7 +16,7 @@ interface Comment {
 	blogSlug: string
 	rating: number
 	comment: string
-	userId: UserID
+	user: User
 }
 
 function BlogCommentCrud({
@@ -30,7 +30,7 @@ function BlogCommentCrud({
 }) {
 	const [comments, setComments] = useState<Comment[]>([])
 	const [loading, setLoading] = useState(true)
-	console.log('comments', comments)
+	
 	useEffect(() => {
 		setLoading(true)
 		fetch(`/api/review?blogSlug=${slug}`)
@@ -129,18 +129,18 @@ function BlogCommentCrud({
 								<div className='flex items-start gap-4'>
 									<Avatar className='w-12 h-12 border-2 border-gray-100'>
 										<AvatarImage
-											src={comment?.userId?.image}
-											alt={comment.userId.name}
+											src={comment?.user?.image || '/placeholder.svg'}
+											alt={comment.user.name}
 											className='object-cover'
 										/>
 										<AvatarFallback className='bg-gradient-to-br from-blue-500 to-purple-600 text-white font-semibold'>
-											{getInitials(comment.userId.name)}
+											{getInitials(comment.user.name)}
 										</AvatarFallback>
 									</Avatar>
 
 									<div className='flex-1 space-y-2'>
 										<div className='flex items-center gap-3'>
-											<h4 className='font-semibold '>{comment.userId.name}</h4>
+											<h4 className='font-semibold '>{comment.user.name}</h4>
 											<div className='flex items-center gap-1'>
 												{renderStars(comment.rating)}
 												<span className='text-sm text-muted-foreground ml-1'>

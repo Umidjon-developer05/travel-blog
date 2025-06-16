@@ -58,8 +58,15 @@ export async function GET(request: Request) {
 			.populate('userId', 'name email image')
 
 		// userId ni "user" qilib rename qilish
+		const formatted = reviews.map(r => ({
+			_id: r._id,
+			blogSlug: r.blogSlug,
+			rating: r.rating,
+			comment: r.comment,
+			user: r.userId,
+		}))
 
-		return NextResponse.json(reviews)
+		return NextResponse.json(formatted)
 	} catch (err) {
 		console.error('Review GET error:', err)
 		return NextResponse.json(
