@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from 'mongoose'
+import  mongoose, { Document, Schema } from 'mongoose'
 export interface IReview extends Document {
 	userId: string
 	rating: number

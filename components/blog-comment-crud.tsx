@@ -30,14 +30,18 @@ function BlogCommentCrud({
 }) {
 	const [comments, setComments] = useState<Comment[]>([])
 	const [loading, setLoading] = useState(true)
-	
+
 	useEffect(() => {
 		setLoading(true)
 		fetch(`/api/review?blogSlug=${slug}`)
 			.then(res => res.json())
 			.then(data => {
+				if (!Array.isArray(data)) {
+					console.error('Invalid data format:', data)
+					setComments([])
+					return
+				}
 				setComments(data)
-				setLoading(false)
 			})
 			.catch(error => {
 				console.error('Error fetching comments:', error)
