@@ -55,9 +55,7 @@ export async function GET(request: Request) {
 			)
 		}
 
-		const reviews = await review
-			.find({ blogSlug })
-			.populate('userId', 'name email image')
+		const reviews = await review.find({ blogSlug }).populate('userId')
 
 		console.log('reviews', reviews)
 		// userId ni "user" qilib rename qilish
