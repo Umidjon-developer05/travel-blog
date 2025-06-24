@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from 'next/server'
 import review from '@/models/review'
-import User from '@/models/users'
+import connectDB from '@/lib/mogodb'
 
 export async function POST(request: NextRequest) {
 	try {
@@ -8,6 +8,7 @@ export async function POST(request: NextRequest) {
 		console.log(
 			`Review POST: userId: ${userId}, rating: ${rating}, comment: ${comment}, blogSlug: ${blogSlug}`
 		)
+		await connectDB()
 		if (!userId) {
 			return NextResponse.json(
 				{ message: 'User ID is required' },
@@ -45,7 +46,7 @@ export async function GET(request: Request) {
 	try {
 		const { searchParams } = new URL(request.url)
 		const blogSlug = searchParams.get('blogSlug')
-
+		await connectDB()
 		if (!blogSlug) {
 			return NextResponse.json(
 				{ message: 'blogSlug talab qilinadi' },
@@ -57,6 +58,7 @@ export async function GET(request: Request) {
 			.find({ blogSlug })
 			.populate('userId', 'name email image')
 
+		console.log('reviews', reviews)
 		// userId ni "user" qilib rename qilish
 		const formatted = reviews.map(r => ({
 			_id: r._id,
@@ -65,7 +67,7 @@ export async function GET(request: Request) {
 			comment: r.comment,
 			user: r.userId,
 		}))
-
+		console.log('formatted', formatted)
 		return NextResponse.json(formatted)
 	} catch (err) {
 		console.error('Review GET error:', err)
