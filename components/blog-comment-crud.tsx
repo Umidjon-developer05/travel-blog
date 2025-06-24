@@ -41,6 +41,7 @@ function BlogCommentCrud({
 					setComments([])
 					return
 				}
+				setLoading(false)
 				setComments(data)
 			})
 			.catch(error => {
@@ -48,7 +49,7 @@ function BlogCommentCrud({
 				setLoading(false)
 			})
 	}, [slug, refreshTrigger])
-
+	console.log('Comments:', comments)
 	const renderStars = (rating: number) => {
 		const stars = []
 		const fullStars = Math.floor(rating)
