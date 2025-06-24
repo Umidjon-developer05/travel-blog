@@ -60,14 +60,16 @@ export async function GET(request: NextRequest) {
 		const reviews = await review
 			.find({ blogSlug })
 			.populate('userId', 'name email image')
-
-		const formatted = reviews.map(r => ({
-			_id: r._id,
-			blogSlug: r.blogSlug,
-			rating: r.rating,
-			comment: r.comment,
-			user: r.userId, // renamed
-		}))
+		
+		const formatted = reviews
+			.filter(r => r.userId !== null)
+			.map(r => ({
+				_id: r._id,
+				blogSlug: r.blogSlug,
+				rating: r.rating,
+				comment: r.comment,
+				user: r.userId,
+			}))
 
 		return NextResponse.json(formatted)
 	} catch (err) {
