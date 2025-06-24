@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from 'next/server'
 import review from '@/models/review'
 import connectDB from '@/lib/mogodb'
-import User from '@/models/users'
+import '@/models/users'
 
 export async function POST(request: NextRequest) {
 	try {
@@ -43,11 +43,13 @@ export async function POST(request: NextRequest) {
 	}
 }
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
 	try {
+		await connectDB()
+
 		const { searchParams } = new URL(request.url)
 		const blogSlug = searchParams.get('blogSlug')
-		await connectDB()
+
 		if (!blogSlug) {
 			return NextResponse.json(
 				{ message: 'blogSlug talab qilinadi' },
@@ -55,18 +57,18 @@ export async function GET(request: Request) {
 			)
 		}
 
-		const reviews = await review.find({ blogSlug }).populate('userId')
+		const reviews = await review
+			.find({ blogSlug })
+			.populate('userId', 'name email image')
 
-		console.log('reviews', reviews)
-		// userId ni "user" qilib rename qilish
 		const formatted = reviews.map(r => ({
 			_id: r._id,
 			blogSlug: r.blogSlug,
 			rating: r.rating,
 			comment: r.comment,
-			user: r.userId,
+			user: r.userId, // renamed
 		}))
-		console.log('formatted', formatted)
+
 		return NextResponse.json(formatted)
 	} catch (err) {
 		console.error('Review GET error:', err)
