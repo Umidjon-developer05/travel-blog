@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from 'next/server'
 import review from '@/models/review'
 import connectDB from '@/lib/mogodb'
+import User from '@/models/users'
 
 export async function POST(request: NextRequest) {
 	try {
