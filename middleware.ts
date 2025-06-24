@@ -46,15 +46,19 @@ export async function middleware(request: NextRequest) {
 	const { pathname } = request.nextUrl
 
 	// Ichki fayllar va API route'larni o'tkazib yuborish
+	const isStaticFile = pathname.match(/\.(.*)$/)
+
 	if (
 		pathname.startsWith('/_next/') ||
 		(pathname.startsWith('/api/') && !pathname.startsWith('/api/auth/')) ||
-		pathname.includes('/favicon.ico') ||
-		pathname.startsWith('/public/')
+		pathname === '/favicon.ico' ||
+		isStaticFile // ← YANGI QO‘SHILDI!
 	) {
 		return NextResponse.next()
 	}
-
+	if (pathname.match(/\.(png|jpg|jpeg|gif|svg|ico)$/)) {
+		return NextResponse.next()
+	}
 	// Pathname ichida locale borligini tekshirish
 	const pathnameHasLocale = locales.some(
 		locale => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`

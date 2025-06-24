@@ -23,6 +23,9 @@ export const metadata: Metadata = {
 		'Silk Road destinations',
 		'Samarkand travel guide',
 	],
+	icons: {
+		icon: '/mata.png',
+	},
 	openGraph: {
 		title: ' MaTa – Taste & Travel Blog ',
 		description:
