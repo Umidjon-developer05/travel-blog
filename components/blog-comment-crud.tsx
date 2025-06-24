@@ -132,16 +132,43 @@ function BlogCommentCrud({
 						>
 							<CardContent className='p-0'>
 								<div className='flex items-start gap-4'>
-									<Avatar className='w-12 h-12 border-2 border-gray-100'>
-										<AvatarImage
-											src={comment?.user?.image || '/placeholder.svg'}
-											alt={comment.user.name}
-											className='object-cover'
-										/>
-										<AvatarFallback className='bg-gradient-to-br from-blue-500 to-purple-600 text-white font-semibold'>
-											{getInitials(comment.user.name)}
-										</AvatarFallback>
-									</Avatar>
+									{comment.user ? (
+										<>
+											<Avatar className='w-12 h-12 border-2 border-gray-100'>
+												<AvatarImage
+													src={comment.user.image || '/placeholder.svg'}
+													alt={comment.user.name}
+													className='object-cover'
+												/>
+												<AvatarFallback className='bg-gradient-to-br from-blue-500 to-purple-600 text-white font-semibold'>
+													{getInitials(comment.user.name)}
+												</AvatarFallback>
+											</Avatar>
+
+											<div className='flex-1 space-y-2'>
+												<div className='flex items-center gap-3'>
+													<h4 className='font-semibold'>{comment.user.name}</h4>
+													<div className='flex items-center gap-1'>
+														{renderStars(comment.rating)}
+														<span className='text-sm text-muted-foreground ml-1'>
+															({comment.rating})
+														</span>
+													</div>
+												</div>
+
+												<p className='text-gray-700 leading-relaxed'>
+													{comment.comment}
+												</p>
+											</div>
+										</>
+									) : (
+										<div className='flex-1 space-y-2'>
+											<p className='text-gray-500 italic'>Anonymous comment</p>
+											<p className='text-gray-700 leading-relaxed'>
+												{comment.comment}
+											</p>
+										</div>
+									)}
 
 									<div className='flex-1 space-y-2'>
 										<div className='flex items-center gap-3'>
